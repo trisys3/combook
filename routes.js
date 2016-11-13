@@ -1,10 +1,10 @@
 'use strict';
 
 export default findRoutes;
-import notes from './notes';
+import home from './home';
 
 function findRoutes() {
-  const root = notes();
+  const root = home();
 
   return (ctx, next) => root(ctx, next);
 }

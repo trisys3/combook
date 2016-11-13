@@ -16,12 +16,12 @@ yargs = yargs
           return JSON.parse(stripJsonComments(readFileSync(configPath, 'utf8')));
         } catch(e) {
           // the file probably just does not exist, which is perfectly fine
-          // for us, so we'll just pass an empty object
+          // for us, so we'll just use an empty object
           return {};
         }
       },
       description: 'Path to a file with all default configuration options. Defaults to ".koakarc", in the style of common Linux & node utilities\' configuration file paths. Comments are stripped out.',
-      default: '.koakarc',
+      default: '.combookrc',
     },
   });
 
@@ -32,7 +32,7 @@ yargs = yargs
     env: {
       type: 'string',
       description: 'Server\'s phase of development',
-      default: process.env.NODE_ENV || 'development',
+      default: yargs.argv.nodeEnv || 'development',
     },
   });
 
@@ -42,12 +42,12 @@ yargs = yargs
     name: {
       type: 'string',
       description: 'Name of the server',
-      default: 'WindNote',
+      default: 'ComBook',
     },
     hostname: {
       type: 'string',
       description: 'Hostname the server uses.',
-      default: 'windnote.com',
+      default: 'combook.com',
     },
     basePort: {
       type: 'number',

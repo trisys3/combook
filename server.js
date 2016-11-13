@@ -11,7 +11,6 @@ import convert from 'koa-convert';
 
 // first-party components
 import {socket, options} from './config';
-// import {csp} from './config';
 import bundler from './webpack.client.config';
 
 // our main koa & SocketIO servers
@@ -33,7 +32,7 @@ server.use(convert(compress()));
 // our JSONAPI logger
 server.use(convert(logger({
   name: options.name,
-  path: 'logs/koa-logger',
+  path: 'logs/com-logger',
 })));
 
 // add certain headers for protection
