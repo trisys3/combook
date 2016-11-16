@@ -10,11 +10,11 @@ import bundler from '../webpack.client.config';
 import {socket, options, minify} from '../config';
 import {green} from 'chalk';
 
-export default notesPage;
+export default homePage;
 
-function notesPage() {
+function homePage() {
   bundler.entry.app = `${process.cwd()}/${__dirname}/app.js`;
-  bundler.output.path = `${process.cwd()}/notes/${options.env}`;
+  bundler.output.path = `${process.cwd()}/home/${options.env}`;
   bundler.plugins[1] = new IndexHtml({
     template: `${__dirname}/index.html`,
     inject: true,
