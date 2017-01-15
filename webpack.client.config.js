@@ -2,8 +2,6 @@
 
 import IndexHtml from 'html-webpack-plugin';
 import {HotModuleReplacementPlugin as HMR} from 'webpack';
-import autoprefixer from 'autoprefixer';
-import postcssReporter from 'postcss-reporter';
 import {lint, minify, options} from './config';
 
 export default {
@@ -36,12 +34,11 @@ export default {
         },
       },
       {
-        test: /\.styl$/,
+        test: /\.css/,
         loaders: [
           'style',
-          'css?sourceMap',
+          'css?sourceMap&importLoaders=1&minimize=false&import=false',
           'postcss',
-          'stylus?sourceMap',
         ],
       },
       {
@@ -66,14 +63,6 @@ export default {
     resolve: {
       extensions: ['', '.js', '.json'],
     },
-  },
-  postcss() {
-    return [
-      autoprefixer,
-      postcssReporter({
-        clearMessages: true,
-      }),
-    ];
   },
   watch: true,
   devtool: 'source-map',

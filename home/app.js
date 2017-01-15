@@ -2,11 +2,7 @@
 import io from 'socket.io-client';
 const socket = io(__dirname);
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-// import {MdParser} from './md-parser';
-import './app.styl';
+import './app.css';
 
 if(module.hot) {
   module.hot.accept();
@@ -18,5 +14,3 @@ if(module.hot) {
     });
   });
 }
-
-// ReactDOM.render(<MdParser />, document.querySelector('notes-parser'));
