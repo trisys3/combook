@@ -27,28 +27,26 @@ const config = {
     libraryTarget: 'commonjs2',
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.node$/,
-      loader: 'node',
+      loader: 'node-loader',
     }, {
       test: /\.js$/,
       exclude: /node_modules/,
-      loader: 'babel',
+      loader: 'babel-loader',
       query: {
         cacheDirectory: true,
       },
-    }, {
-      test: /\.json$/,
-      loader: 'json',
     }],
-    resolve: {
-      extensions: ['', '.js', '.json'],
-    },
+  },
+  resolve: {
+    extensions: ['.js', '.json'],
   },
   target: 'node',
   externals: nodeModules,
   plugins: [
-    new webpack.BannerPlugin('require("source-map-support").install();', {
+    new webpack.BannerPlugin({
+      banner: 'require("source-map-support").install();',
       raw: true,
       entryOnly: false,
     }),
@@ -68,8 +66,6 @@ const config = {
 Object.assign(exports, config);
 
 if(process.argv[1] === __filename) {
-  let servers = [];
-
   webpack(config)
     .watch({}, (err, stats) => {
       const assets = Object.keys(stats.compilation.assets);
@@ -79,26 +75,28 @@ if(process.argv[1] === __filename) {
         return;
       }
 
-      if(assets.filter(allEntries => path.extname(allEntries) === '.js').length) {
-        servers = assets.map(asset => `${outputFolder}/${asset}`)
-          .filter(allEntries => path.extname(allEntries) === '.js')
-          .map((entry, entryIndex) => {
-            const newServer = require(entry);
-
-            if(servers.length) {
-              const prevServer = servers[entryIndex];
-
-              if(prevServer) {
-                prevServer.stop();
-              }
-            }
-
-            newServer.serve();
-
-            return newServer;
-          });
-      } else {
+      if(!assets.filter(allEntries => path.extname(allEntries) === '.js').length) {
         console.log(red('No usable assets found. Either you did not specify any entry points in JavaScript or compilable to JavaScript, or you have an error in your entry point(s).'));
+        process.exit();
       }
+
+      let servers = [];
+      servers = assets.map(asset => `${outputFolder}/${asset}`)
+        .filter(allEntries => path.extname(allEntries) === '.js')
+        .map((entry, entryIndex) => {
+          const newServer = require(entry);
+
+          if(servers.length) {
+            const prevServer = servers[entryIndex];
+
+            if(prevServer) {
+              prevServer.stop();
+            }
+          }
+
+          newServer.serve();
+
+          return newServer;
+        });
     });
 }

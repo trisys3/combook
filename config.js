@@ -20,7 +20,7 @@ yargs = yargs
           return {};
         }
       },
-      description: 'Path to a file with all default configuration options. Defaults to ".koakarc", in the style of common Linux & node utilities\' configuration file paths. Comments are stripped out.',
+      description: 'Path to a file with all default configuration options. Defaults to ".combookrc", in the style of common Linux & node utilities\' configuration file paths. Comments are stripped out.',
       default: '.combookrc',
     },
   });

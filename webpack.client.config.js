@@ -15,54 +15,67 @@ export default {
     pathinfo: options.env === 'development',
   },
   module: {
-    preLoaders: [
-      {
-        test: /\.png$|\.jpg$|\.gif$/,
-        loader: 'img',
-        query: {
-          minimize: true,
-        },
-      },
-    ],
-    loaders: [
+    rules: [
+      // {
+      //   enforce: 'pre',
+      //   test: /\.png$|\.jpg$|\.gif$/,
+      //   loader: 'img-loader',
+      //   query: {
+      //     minimize: true,
+      //   },
+      // },
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel',
+        loader: 'babel-loader',
         query: {
           cacheDirectory: true,
         },
       },
       {
         test: /\.css/,
-        loaders: [
-          'style',
-          'css?sourceMap&importLoaders=1&minimize=false&import=false',
-          'postcss',
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+              importLoaders: 1,
+              minimize: false,
+              import: false,
+            },
+          },
+          'postcss-loader',
         ],
       },
       {
         test: /\.png$|\.jpg$|\.gif$/,
-        loader: 'url',
-        query: {
-          name: '[sha512:hash].[ext]',
-        },
-      },
-      {
-        test: /\.json$/,
-        loader: 'json',
+        use: [
+          {
+            loader: 'img-loader',
+            options: {
+              minimize: true,
+            },
+          },
+          {
+            loader: 'url-loader',
+            options: {
+              name: '[sha512:hash].[ext]',
+            },
+          },
+        ],
       },
       {
         test: /\.html$/,
-        loader: 'html',
-        query: {
+        loader: 'html-loader',
+        options: {
           minimize: lint.html,
         },
       },
     ],
-    resolve: {
-      extensions: ['', '.js', '.json'],
-    },
+  },
+  resolve: {
+    extensions: ['.js', '.json'],
   },
   watch: true,
   devtool: 'source-map',
