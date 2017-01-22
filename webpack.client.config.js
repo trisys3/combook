@@ -16,14 +16,6 @@ export default {
   },
   module: {
     rules: [
-      // {
-      //   enforce: 'pre',
-      //   test: /\.png$|\.jpg$|\.gif$/,
-      //   loader: 'img-loader',
-      //   query: {
-      //     minimize: true,
-      //   },
-      // },
       {
         test: /\.js$/,
         exclude: /node_modules/,

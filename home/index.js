@@ -35,7 +35,6 @@ function homePage() {
       // sockets connected to this page
       hotUpdWatch.on('add', () => {
         console.log(green('File changed'));
-
         io.emit('hot-update');
       });
     });
@@ -49,11 +48,15 @@ function homePage() {
 
     const path = resolve(ctx.path);
     if(path === '/' || path === '/index.html') {
-      ctx.type = 'html';
-      ctx.body = readFileSync(`${__dirname}/${options.env}/index.html`, 'utf-8');
+      Object.assign(ctx, {
+        type: 'html',
+        body: readFileSync(`${__dirname}/${options.env}/index.html`, 'utf-8'),
+      });
     } else {
-      ctx.type = mime.lookup(path);
-      ctx.body = readFileSync(`${__dirname}/${options.env}/${path}`, 'utf-8');
+      Object.assign(ctx, {
+        type: mime.lookup(path),
+        body: readFileSync(`${__dirname}/${options.env}/${path}`, 'utf-8'),
+      });
     }
 
     await next();

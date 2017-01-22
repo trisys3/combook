@@ -3,11 +3,10 @@
 // third-party components
 import {green, gray, magenta, cyan, red} from 'chalk';
 import Koa from 'koa';
-import logger from 'koa-json-logger';
-import compress from 'koa-compressor';
+import logger from 'koa-logger';
+import compress from 'koa-compress';
 import helmet from 'koa-helmet';
 import {createServer} from 'http';
-import convert from 'koa-convert';
 
 // first-party components
 import {socket, options} from './config';
@@ -27,16 +26,16 @@ server.name = options.name;
 server.env = options.env;
 
 // compression middleware
-server.use(convert(compress()));
+server.use(compress());
 
 // our JSONAPI logger
-server.use(convert(logger({
+server.use(logger({
   name: options.name,
   path: 'logs/com-logger',
-})));
+}));
 
 // add certain headers for protection
-server.use(convert(helmet()));
+server.use(helmet());
 // server.use(convert(helmet.csp(csp)));
 
 server.use(allRoutes);
