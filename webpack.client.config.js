@@ -2,7 +2,42 @@
 
 import IndexHtml from 'html-webpack-plugin';
 import {HotModuleReplacementPlugin as HMR} from 'webpack';
-import {lint, minify, options} from './config';
+
+import options from './config';
+
+const minify = {};
+
+minify.urls = {
+  /* eslint camelcase: 0 */
+  ignore_www: true,
+};
+minify.js = {
+
+};
+minify.css = {
+
+};
+minify.html = {
+  removeComments: true,
+  removeCommentsFromCDATA: true,
+  removeCDATASectionsFromCDATA: true,
+  collapseWhitespace: true,
+  conservativeCollapse: true,
+  collapseBooleanAttributes: true,
+  removeAttributeQuotes: true,
+  removeRedundantAttributes: true,
+  useShortDoctype: true,
+  removeEmptyAttributes: true,
+  removeScriptTypeAttributes: true,
+  removeStyleLinkTypeAttributes: true,
+  removeOptionalTags: true,
+  // lint: lint.html,
+  // minifyJS: minify.js,
+  // minifyCSS: minify.css,
+  minifyURLs: minify.urls,
+};
+
+export {minify};
 
 export default {
   entry: {
@@ -11,8 +46,8 @@ export default {
   output: {
     filename: '[name].[hash].js',
     chunkFilename: '[name].[hash].[chunkhash].js',
-    path: `${__dirname}/${options.env}`,
-    pathinfo: options.env === 'development',
+    path: `${__dirname}/${options.nodeEnv}`,
+    pathinfo: options.nodeEnv === 'development',
   },
   module: {
     rules: [
@@ -61,7 +96,7 @@ export default {
         test: /\.html$/,
         loader: 'html-loader',
         options: {
-          minimize: lint.html,
+          minimize: minify.html,
         },
       },
     ],

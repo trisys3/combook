@@ -6,7 +6,7 @@ const red = require('chalk').red;
 const path = require('path');
 const pkg = require(`${process.cwd()}/package.json`);
 const webpack = require('webpack');
-const options = require('./config').options;
+const options = require('./config');
 
 const deps = Object.assign({}, pkg.dependencies, pkg.devDependencies);
 const nodeModules = {};
@@ -23,7 +23,7 @@ const config = {
     filename: '[name].[hash].js',
     chunkFilename: '[name].[hash].[chunkhash].js',
     path: `${process.cwd()}/dist`,
-    pathinfo: options.env === 'development',
+    pathinfo: options.nodeEnv === 'development',
     libraryTarget: 'commonjs2',
   },
   module: {

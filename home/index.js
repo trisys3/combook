@@ -6,15 +6,17 @@ import {watch} from 'chokidar';
 import {resolve} from 'path';
 import {readFileSync} from 'fs';
 import mime from 'mime';
-import bundler from '../webpack.client.config';
-import {socket, options, minify} from '../config';
 import {green} from 'chalk';
+
+import options from '../config';
+import {socket} from '../server';
+import bundler, {minify} from '../webpack.client.config';
 
 export default homePage;
 
 function homePage() {
   bundler.entry.app = `${process.cwd()}/${__dirname}/app.js`;
-  bundler.output.path = `${process.cwd()}/home/${options.env}`;
+  bundler.output.path = `${process.cwd()}/home/${options.nodeEnv}`;
   bundler.plugins[1] = new IndexHtml({
     template: `${__dirname}/index.html`,
     inject: true,
@@ -25,7 +27,7 @@ function homePage() {
   webpack(bundler, () => {
     // watch all hot update files in the compilation folder
     const hotUpdWatch = watch('*.hot-update.json', {
-      cwd: `${process.cwd()}/${__dirname}/${options.env}`,
+      cwd: `${process.cwd()}/${__dirname}/${options.nodeEnv}`,
       // ignore hidden files
       ignored: /^\./,
     });
@@ -43,22 +45,23 @@ function homePage() {
   return async (ctx, next) => {
     // we only deal with GET requests here
     if(ctx.method !== 'GET') {
-      await next();
+      return next();
     }
 
     const path = resolve(ctx.path);
+    console.log(ctx.path);
     if(path === '/' || path === '/index.html') {
       Object.assign(ctx, {
         type: 'html',
-        body: readFileSync(`${__dirname}/${options.env}/index.html`, 'utf-8'),
+        body: readFileSync(`${__dirname}/${options.nodeEnv}/index.html`, 'utf-8'),
       });
     } else {
       Object.assign(ctx, {
         type: mime.lookup(path),
-        body: readFileSync(`${__dirname}/${options.env}/${path}`, 'utf-8'),
+        body: readFileSync(`${__dirname}/${options.nodeEnv}/${path}`, 'utf-8'),
       });
     }
 
-    await next();
+    return next();
   };
 }
