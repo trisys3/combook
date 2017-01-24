@@ -49,7 +49,6 @@ function homePage() {
     }
 
     const path = resolve(ctx.path);
-    console.log(ctx.path);
     if(path === '/' || path === '/index.html') {
       Object.assign(ctx, {
         type: 'html',

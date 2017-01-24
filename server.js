@@ -19,27 +19,28 @@ const socket = new Sockets();
 const cspConf = {
   directives: {
     // by default only allow connections from our sites
-    'default-src': ["'self'"],
+    defaultSrc: ["'self'"],
     // only allow JavaScript code from our sites
-    'script-src': ["'self'"],
+    scriptSrc: ["'self'"],
     // only allow CSS styles from our sites
-    'style-src': ["'self'", 'blob:'],
+    styleSrc: ["'self'", 'blob:'],
     // only allow images from our sites and data-uri's
-    'img-src': ["'self'", 'data:'],
+    imgSrc: ["'self'", 'data:'],
     // only allow partial-page connections (XHR, WebSockets, etc.) from our
     // sites
-    'connect-src': ["'self'", `ws://localhost:${options.clientPort}`],
+    connectSrc: ["'self'", `ws://localhost:${options.clientPort}`],
     // only allow fonts from our sites
-    'font-src': ["'self'"],
+    fontSrc: ["'self'"],
     // do not allow Flash on our sites
-    'object-src': ["'none'"],
+    objectSrc: ["'none'"],
     // do not allow embedding of <iframe>s in our sites
-    'frame-src': ["'none'"],
+    childSrc: ["'none'"],
     // only allow video & audio from our sites
-    'media-src': ["'self'"],
+    mediaSrc: ["'self'"],
     // URL to send reports of violations to
-    'report-uri': '/csp-report',
+    reportUri: '/csp-report',
   },
+  reportOnly: true,
 };
 
 // our main koa & SocketIO servers
