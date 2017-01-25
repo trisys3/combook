@@ -66,6 +66,7 @@ const config = {
 Object.assign(exports, config);
 
 if(process.argv[1] === __filename) {
+  let servers = [];
   webpack(config)
     .watch({}, (err, stats) => {
       const assets = Object.keys(stats.compilation.assets);
@@ -80,14 +81,14 @@ if(process.argv[1] === __filename) {
         process.exit();
       }
 
-      let servers = [];
-      servers = assets.map(asset => `${outputFolder}/${asset}`)
+      const newServers = assets.map(asset => `${outputFolder}/${asset}`)
         .filter(allEntries => path.extname(allEntries) === '.js')
         .map((entry, entryIndex) => {
           const newServer = require(entry);
 
           if(servers.length) {
-            const prevServer = servers[entryIndex];
+            // assume only 1 server per watch
+            const prevServer = servers[servers.length - 1];
 
             if(prevServer) {
               prevServer.stop();
@@ -98,5 +99,7 @@ if(process.argv[1] === __filename) {
 
           return newServer;
         });
+
+      servers.push(...newServers);
     });
 }
