@@ -6,11 +6,5 @@ import './app.css';
 
 if(module.hot) {
   module.hot.accept();
-  socket.on('hot-update', () => {
-    module.hot.check((err, mods) => {
-      if(mods) {
-        module.hot.apply();
-      }
-    });
-  });
+  socket.once('hot-update', () => module.hot.check(true));
 }
