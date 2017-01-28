@@ -31,13 +31,63 @@ minify.html = {
   removeScriptTypeAttributes: true,
   removeStyleLinkTypeAttributes: true,
   removeOptionalTags: true,
-  // lint: lint.html,
   // minifyJS: minify.js,
   // minifyCSS: minify.css,
   minifyURLs: minify.urls,
 };
 
 export {minify};
+
+const loaders = [
+  // {
+  //   test: /\.js$/,
+  //   exclude: /node_modules/,
+  //   loader: 'babel-loader',
+  //   options: {
+  //     cacheDirectory: true,
+  //   },
+  // },
+  {
+    test: /\.css$/,
+    use: [
+      'style-loader',
+      {
+        loader: 'css-loader',
+        options: {
+          sourceMap: true,
+          importLoaders: 1,
+          minimize: false,
+          import: false,
+        },
+      },
+      'postcss-loader',
+    ],
+  },
+  {
+    test: /\.(png|je?pg|gif|svg)$/i,
+    use: [
+      {
+        loader: 'img-loader',
+        options: {
+          minimize: true,
+        },
+      },
+      {
+        loader: 'url-loader',
+        options: {
+          name: '[sha512:hash].[ext]',
+        },
+      },
+    ],
+  },
+  {
+    test: /\.html$/,
+    loader: 'html-loader',
+    options: {
+      minimize: minify.html,
+    },
+  },
+];
 
 export default {
   entry: {
@@ -50,56 +100,7 @@ export default {
     pathinfo: options.nodeEnv === 'development',
   },
   module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-        query: {
-          cacheDirectory: true,
-        },
-      },
-      {
-        test: /\.css/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true,
-              importLoaders: 1,
-              minimize: false,
-              import: false,
-            },
-          },
-          'postcss-loader',
-        ],
-      },
-      {
-        test: /\.png$|\.jpg$|\.gif$/,
-        use: [
-          {
-            loader: 'img-loader',
-            options: {
-              minimize: true,
-            },
-          },
-          {
-            loader: 'url-loader',
-            options: {
-              name: '[sha512:hash].[ext]',
-            },
-          },
-        ],
-      },
-      {
-        test: /\.html$/,
-        loader: 'html-loader',
-        options: {
-          minimize: minify.html,
-        },
-      },
-    ],
+    rules: loaders,
   },
   resolve: {
     extensions: ['.js', '.json'],

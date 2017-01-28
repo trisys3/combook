@@ -15,6 +15,18 @@ for(const dep in deps) {
   nodeModules[dep] = `commonjs ${dep}`;
 }
 
+const loaders = [{
+  test: /\.node$/,
+  loader: 'node-loader',
+}, {
+  test: /\.js$/,
+  exclude: /node_modules/,
+  loader: 'babel-loader',
+  query: {
+    cacheDirectory: true,
+  },
+}];
+
 const config = {
   entry: {
     index: `${__dirname}/server.js`,
@@ -27,17 +39,7 @@ const config = {
     libraryTarget: 'commonjs2',
   },
   module: {
-    rules: [{
-      test: /\.node$/,
-      loader: 'node-loader',
-    }, {
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'babel-loader',
-      query: {
-        cacheDirectory: true,
-      },
-    }],
+    rules: loaders,
   },
   resolve: {
     extensions: ['.js', '.json'],
