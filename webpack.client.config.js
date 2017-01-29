@@ -38,56 +38,51 @@ minify.html = {
 
 export {minify};
 
-const loaders = [
-  // {
-  //   test: /\.js$/,
-  //   exclude: /node_modules/,
-  //   loader: 'babel-loader',
-  //   options: {
-  //     cacheDirectory: true,
-  //   },
-  // },
-  {
-    test: /\.css$/,
-    use: [
-      'style-loader',
-      {
-        loader: 'css-loader',
-        options: {
-          sourceMap: true,
-          importLoaders: 1,
-          minimize: false,
-          import: false,
-        },
-      },
-      'postcss-loader',
-    ],
+const loaders = [{
+  test: /\.js$/,
+  exclude: /node_modules/,
+  loader: 'babel-loader',
+  options: {
+    cacheDirectory: true,
   },
-  {
-    test: /\.(png|je?pg|gif|svg)$/i,
-    use: [
-      {
-        loader: 'img-loader',
-        options: {
-          minimize: true,
-        },
+}, {
+  test: /\.css$/,
+  use: [
+    'style-loader',
+    {
+      loader: 'css-loader',
+      options: {
+        sourceMap: true,
+        importLoaders: 1,
+        minimize: false,
+        import: false,
       },
-      {
-        loader: 'url-loader',
-        options: {
-          name: '[sha512:hash].[ext]',
-        },
-      },
-    ],
-  },
-  {
-    test: /\.html$/,
-    loader: 'html-loader',
-    options: {
-      minimize: minify.html,
     },
+    'postcss-loader',
+  ],
+}, {
+  test: /\.(png|je?pg|gif|svg)$/i,
+  use: [
+    {
+      loader: 'img-loader',
+      options: {
+        minimize: true,
+      },
+    },
+    {
+      loader: 'url-loader',
+      options: {
+        name: '[sha512:hash].[ext]',
+      },
+    },
+  ],
+}, {
+  test: /\.html$/,
+  loader: 'html-loader',
+  options: {
+    minimize: minify.html,
   },
-];
+}];
 
 export default {
   entry: {
