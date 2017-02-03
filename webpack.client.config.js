@@ -1,5 +1,3 @@
-'use strict';
-
 import IndexHtml from 'html-webpack-plugin';
 import {HotModuleReplacementPlugin as HMR} from 'webpack';
 
@@ -80,18 +78,18 @@ const loaders = [{
   test: /\.html$/,
   loader: 'html-loader',
   options: {
-    minimize: minify.html,
+    minimize: true,
   },
 }];
 
 export default {
   entry: {
-    app: `${__dirname}/app.js`,
+    app: 'app.js',
   },
   output: {
     filename: '[name].[hash].js',
     chunkFilename: '[name].[hash].[chunkhash].js',
-    path: `${__dirname}/${options.nodeEnv}`,
+    path: options.nodeEnv,
     pathinfo: options.nodeEnv === 'development',
   },
   module: {
@@ -105,9 +103,7 @@ export default {
   plugins: [
     new HMR(),
     new IndexHtml({
-      template: `${__dirname}/index.html`,
-      inject: true,
-      minify: minify.html,
+      template: 'index.html',
     }),
   ],
 };

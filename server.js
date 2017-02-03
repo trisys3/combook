@@ -11,7 +11,7 @@ import Sockets from 'socket.io';
 
 // first-party components
 import options from './config';
-import bundler from './webpack.client.config';
+import routes from './routes';
 
 const socket = new Sockets();
 
@@ -46,10 +46,6 @@ const cspConf = {
 // our main koa & SocketIO servers
 export const server = new Koa();
 
-// get the routes
-import routes from './routes';
-const allRoutes = routes(options, bundler);
-
 // give the server a name
 server.name = options.name;
 
@@ -80,7 +76,9 @@ server.use(logger({
 server.use(helmet());
 server.use(csp(cspConf));
 
-server.use(allRoutes);
+for(const route of routes) {
+  server.use(route);
+}
 
 // create a NodeJS server with the content of our koa application
 const app = createServer(server.callback());

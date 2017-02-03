@@ -1,10 +1,8 @@
 #! /usr/bin/env node
 
-'use strict';
-
 const red = require('chalk').red;
-const path = require('path');
-const pkg = require(`${process.cwd()}/package.json`);
+const {join, extname} = require('path');
+const pkg = require(join(process.cwd(), 'package.json'));
 const webpack = require('webpack');
 const options = require('./config');
 
@@ -68,7 +66,7 @@ const config = {
 Object.assign(exports, config);
 
 if(process.argv[1] === __filename) {
-  let servers = [];
+  const servers = [];
   webpack(config)
     .watch({}, (err, stats) => {
       const assets = Object.keys(stats.compilation.assets);
@@ -78,14 +76,14 @@ if(process.argv[1] === __filename) {
         return;
       }
 
-      if(!assets.filter(allEntries => path.extname(allEntries) === '.js').length) {
+      if(!assets.filter(allEntries => extname(allEntries) === '.js').length) {
         console.log(red('No usable assets found. Either you did not specify any entry points in JavaScript or compilable to JavaScript, or you have an error in your entry point(s).'));
         process.exit();
       }
 
       const newServers = assets.map(asset => `${outputFolder}/${asset}`)
-        .filter(allEntries => path.extname(allEntries) === '.js')
-        .map((entry, entryIndex) => {
+        .filter(allEntries => extname(allEntries) === '.js')
+        .map(entry => {
           const newServer = require(entry);
 
           if(servers.length) {
