@@ -1,24 +1,38 @@
 import {join} from 'path';
-import {readFileSync} from 'fs';
+// import {readFileSync} from 'fs';
 import webpack from 'webpack';
 import IndexHtml from 'html-webpack-plugin';
 import {watch} from 'chokidar';
-import mime from 'mime';
+// import mime from 'mime';
+import Koa from 'koa';
+import mount from 'koa-mount';
+import serve from 'koa-static';
+import {green} from 'chalk';
 
 import options from './config';
 import bundler from './webpack.client.config';
 import home from './home';
+import combook from './combook';
 import {socket} from './server';
-import {green} from 'chalk';
 
 const root = {
   route: home(),
   path: 'home',
 };
 
-const routes = [root];
+const book = {
+  route: combook(),
+  path: 'combook',
+  src: 'book',
+};
 
-export default routes.map(({route, path}) => {
+const routes = [
+  root,
+  book,
+];
+
+export default routes.map(({path = '', src = '', route}) => {
+  const app = new Koa();
   const cwd = join(process.cwd(), path);
 
   bundler.entry.app = join(cwd, 'app.js');
@@ -38,7 +52,7 @@ export default routes.map(({route, path}) => {
 
     socket.on('connection', io => {
       // whenever a hot-update file gets created, emit a hot-update event to all
-      // sockets connected to this page
+      // sockets already connected to this page
       hotUpdWatch.on('add', () => {
         console.log(green('File changed'));
         io.emit('hot-update');
@@ -46,29 +60,11 @@ export default routes.map(({route, path}) => {
     });
   });
 
-  return (ctx, next) => {
-    // we only deal with GET requests here
-    if(ctx.method !== 'GET') {
-      return next();
-    }
+  app.use(serve(join(path, options.nodeEnv)));
 
-    const path = ctx.path;
-    if(path === '/' || path === '/index.html') {
-      Object.assign(ctx, {
-        type: 'html',
-        body: readFileSync(join(cwd, options.nodeEnv, 'index.html'), 'utf-8'),
-      });
-    } else {
-      Object.assign(ctx, {
-        type: mime.lookup(path),
-        body: readFileSync(join(cwd, options.nodeEnv, path), 'utf-8'),
-      });
-    }
+  if(typeof route === 'function') {
+    app.use(route);
+  }
 
-    if(typeof route === 'function') {
-      route(ctx);
-    }
-
-    return next();
-  };
+  return mount(`/${src}`, app);
 });
