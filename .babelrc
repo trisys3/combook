@@ -10,6 +10,10 @@
     "stage-1",
     "stage-0",
   ],
+  "plugins": [
+    // React
+    "transform-react-jsx",
+  ],
 
   "ignore": [
     "node_modules",
@@ -18,17 +22,25 @@
     "development": {
       "plugins": [
         "transform-runtime",
+
+        // React
+        "transform-react-display-name",
+        "transform-react-jsx-self",
       ],
     },
     "production": {
       "presets": [
-        "babel-preset-babili",
+        "babili",
       ],
 
       "plugins": [
         // minification
-        "babel-plugin-transform-inline-environment-variables",
-        "babel-plugin-transform-node-env-inline",
+        "transform-inline-environment-variables",
+        "transform-node-env-inline",
+
+        // React
+        "transform-react-constant-elements",
+        "transform-react-inline-elements",
       ],
     },
   },
