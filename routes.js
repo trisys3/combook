@@ -13,6 +13,7 @@ import options from './config';
 import bundler from './webpack.client.config';
 import home from './home';
 import combook from './combook';
+import pagePage from './page';
 import {socket} from './server';
 
 const root = {
@@ -26,9 +27,16 @@ const book = {
   src: 'book',
 };
 
+const page = {
+  route: pagePage(),
+  path: 'page',
+  src: 'page',
+};
+
 const routes = [
   root,
   book,
+  page,
 ];
 
 export default routes.map(({path = '', src = '', route}) => {
