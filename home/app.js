@@ -1,20 +1,23 @@
-// connect to the home SocketIO namespace
 import io from 'socket.io-client';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 import './app.css';
 
 const socket = io(__dirname);
 
-const {forEach} = Array.prototype;
+const ComicBook = window.comBook.default;
+const Page = window.page.default;
+const Panel = window.panel.default;
 
-const bookImp = document.querySelector('#book-import').import;
-const bookSpots = document.querySelectorAll('com-book');
-
-if(bookImp != null) {
-  const pages = bookImp.querySelector('com-book').children;
-  bookSpots::forEach(spot => pages
-    ::forEach(page => spot.appendChild(page.cloneNode())));
-}
+ReactDOM.render(
+  <ComicBook>
+    <Page>
+      <Panel />
+    </Page>
+  </ComicBook>,
+  document.querySelector('com-book'),
+);
 
 if(module.hot) {
   module.hot.accept();

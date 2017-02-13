@@ -1,3 +1,1 @@
-export default homePage;
-
-function homePage() {}
+export default () => () => {};

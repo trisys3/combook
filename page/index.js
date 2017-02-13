@@ -1,3 +1,1 @@
-export default page;
-
-function page() {}
+export default () => () => {};

@@ -14,40 +14,61 @@ import bundler from './webpack.client.config';
 import home from './home';
 import combook from './combook';
 import pagePage from './page';
+import panelPage from './panel';
 import {socket} from './server';
 
 const root = {
-  route: home(),
+  route: home,
   path: 'home',
+  name: 'home',
 };
 
 const book = {
-  route: combook(),
+  route: combook,
   path: 'combook',
   src: 'book',
+  name: 'comBook',
 };
 
 const page = {
-  route: pagePage(),
+  route: pagePage,
   path: 'page',
   src: 'page',
+  name: 'page',
+};
+
+const panel = {
+  route: panelPage,
+  path: 'panel',
+  src: 'panel',
+  name: 'panel',
 };
 
 const routes = [
   root,
   book,
   page,
+  panel,
 ];
 
-export default routes.map(({path = '', src = '', route}) => {
+export default routes.map(({name = '', path = '', src = '', route}) => {
   const app = new Koa();
   const cwd = join(process.cwd(), path);
 
   bundler.entry.app = join(cwd, 'app.js');
-  bundler.output.path = join(cwd, options.nodeEnv);
+  Object.assign(bundler.output, {
+    path: join(cwd, options.nodeEnv),
+    library: name,
+  });
   bundler.plugins[1] = new IndexHtml({
     template: join(cwd, 'index.html'),
   });
+
+  app.use(serve(join(path, options.nodeEnv)));
+
+  if(typeof route === 'function') {
+    app.use(route());
+  }
 
   // compile the module with webpack
   webpack(bundler, () => {
@@ -67,12 +88,6 @@ export default routes.map(({path = '', src = '', route}) => {
       });
     });
   });
-
-  app.use(serve(join(path, options.nodeEnv)));
-
-  if(typeof route === 'function') {
-    app.use(route);
-  }
 
   return mount(`/${src}`, app);
 });
