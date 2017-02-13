@@ -1,5 +1,7 @@
 #! /usr/bin/env node
 
+'use strict';
+
 const red = require('chalk').red;
 const {join, extname} = require('path');
 const pkg = require(join(process.cwd(), 'package.json'));
