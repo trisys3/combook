@@ -1,3 +1,5 @@
 import React from 'react';
 
-export default ({children}) => <div>{children}</div>;
+const Page = window.page.default;
+
+export default () => <Page />;

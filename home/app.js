@@ -6,16 +6,25 @@ import './app.css';
 
 const socket = io(__dirname);
 
+const book = {
+  author: 'S. O. Meone',
+  title: 'The Home-Bound Hero',
+  pages: [
+    {
+      start: 1,
+      end: 2,
+    },
+    {
+      start: -2,
+      end: -1,
+    },
+  ],
+};
+
 const ComicBook = window.comBook.default;
-const Page = window.page.default;
-const Panel = window.panel.default;
 
 ReactDOM.render(
-  <ComicBook>
-    <Page>
-      <Panel />
-    </Page>
-  </ComicBook>,
+  <ComicBook book={book} />,
   document.querySelector('com-book'),
 );
 
