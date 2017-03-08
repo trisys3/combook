@@ -2,13 +2,18 @@ import io from 'socket.io-client';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './app.css';
+import {homeBook} from './app.css';
 
 const socket = io(__dirname);
 
 const book = {
-  author: 'S. O. Meone',
+  author: {
+    full: 'S. O. Meone',
+    first: 's',
+    last: 'meone',
+  },
   title: 'The Home-Bound Hero',
+  shortTitle: 'home-bound-hero',
   pages: [
     {
       start: 1,
@@ -21,10 +26,13 @@ const book = {
   ],
 };
 
-const ComicBook = window.comBook.default;
+const Book = window.comBook.default;
 
 ReactDOM.render(
-  <ComicBook book={book} />,
+  <div className={homeBook}>
+    <Book book={book} />
+  </div>,
+
   document.querySelector('com-book'),
 );
 

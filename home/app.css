@@ -2,7 +2,17 @@
 
 body {
   background-color: green;
-  background-image: url(image.png);
-  filter: sepia(60%);
   display: flex;
+}
+
+.homeBook {
+  display: flex;
+  width: 600px;
+  height: 500px;
+  margin-left: auto;
+  margin-right: auto;
+
+  &.opened {
+    width: 1200px;
+  }
 }
