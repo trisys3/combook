@@ -11,7 +11,7 @@ const options = require('./config');
 const deps = Object.assign({}, pkg.dependencies, pkg.devDependencies);
 const nodeModules = {};
 
-for(const dep in deps) {
+for(const dep of Object.keys(deps)) {
   nodeModules[dep] = `commonjs ${dep}`;
 }
 

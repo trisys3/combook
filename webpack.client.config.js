@@ -54,6 +54,7 @@ const loaders = [{
         importLoaders: 1,
         minimize: false,
         import: false,
+        modules: true,
       },
     },
     'postcss-loader',
@@ -80,6 +81,9 @@ const loaders = [{
   options: {
     minimize: true,
   },
+}, {
+  test: /\.txt$/,
+  loader: 'raw-loader',
 }];
 
 export default {
