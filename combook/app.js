@@ -4,20 +4,19 @@ import css from './app.css';
 
 const Page = window.page.default;
 
-export default ({book: {shortTitle, author}, pages = 1}) => {
+export default function Book({book: {shortTitle = '', author = ''} = {}, startPage = 0, endPage} = {}) {
   const authorName = `${author.first}-${author.last}`;
   const bookFolder = `./books/${authorName}/${shortTitle}`;
   const bookCss = require(`${bookFolder}/book.css`);
 
-  if(!Array.isArray(pages)) {
-    pages = [pages];
-  }
+  const pageCount = Math.abs(endPage - startPage + 1) || 1;
 
   return <div className={`${css.comBook} ${bookCss.comBook}`}>
-    {pages.map((page, index) => {
-      const pageWords = require(`${bookFolder}/pages/${page}/words.txt`);
-      console.log(pageWords);
-      return <Page words={pageWords} key={index} />;
+    {Array(pageCount).map((page, index) => {
+      const pageNum = index + 1;
+      const pageWords = require(`${bookFolder}/pages/${pageNum}/words.txt`);
+
+      return <Page words={pageWords} key={pageNum} />;
     })}
   </div>;
-};
+}
