@@ -38,19 +38,30 @@ class Home extends React.Component {
     this.state = {
       startPage: 1,
     };
+
+    this.isFirstPage = this.isFirstPage.bind(this);
+    this.isLastPage = this.isLastPage.bind(this);
   }
 
   render() {
     const {startPage, endPage = startPage} = this.state;
     return <div className={homeComp}>
-      <div className={`${prevPage} ${pageChanger}`} onClick={() => this.getPrevPage()} />
+      <div className={`${prevPage} ${pageChanger}`} onClick={() => this.getPrevPage()} disabled={this.state.isFirstPage} />
 
       <div className={homeBook}>
-        <Book book={book} startPage={startPage} endPage={endPage} />
+        <Book book={book} startPage={startPage} endPage={endPage} isFirstPage={this.isFirstPage} isLastPage={this.isLastPage} />
       </div>
 
-      <div className={`${nextPage} ${pageChanger}`} onClick={() => this.getNextPage()} />
+      <div className={`${nextPage} ${pageChanger}`} onClick={() => this.getNextPage()} disabled={this.state.isFLastPage} />
     </div>;
+  }
+
+  isFirstPage(firstPage) {
+    this.setState({isFirstPage: firstPage});
+  }
+
+  isLastPage(lastPage) {
+    this.setState({isLastPage: lastPage});
   }
 
   getPrevPage() {
