@@ -37,6 +37,7 @@ class Home extends React.Component {
     super();
     this.state = {
       startPage: 1,
+      endPage: 1,
     };
 
     this.isFirstPage = this.isFirstPage.bind(this);
@@ -52,23 +53,36 @@ class Home extends React.Component {
         <Book book={book} startPage={startPage} endPage={endPage} isFirstPage={this.isFirstPage} isLastPage={this.isLastPage} />
       </div>
 
-      <div className={`${nextPage} ${pageChanger}`} onClick={() => this.getNextPage()} disabled={this.state.isFLastPage} />
+      <div className={`${nextPage} ${pageChanger}`} onClick={() => this.getNextPage()} disabled={this.state.isLastPage} />
     </div>;
   }
 
-  isFirstPage(firstPage) {
-    this.setState({isFirstPage: firstPage});
+  isFirstPage(isFirst) {
+    this.setState({isFirstPage: isFirst});
   }
 
-  isLastPage(lastPage) {
-    this.setState({isLastPage: lastPage});
+  isLastPage(isLast) {
+    this.setState({isLastPage: isLast});
   }
 
   getPrevPage() {
+    if(this.state.isFirstPage) {
+      return;
+    }
+
+    const newEnd = this.state.startPage - 1;
+    const newStart = newEnd - 1;
+    this.setState({startPage: newStart, endPage: newEnd});
   }
 
   getNextPage() {
-    console.log(this.setState);
+    if(this.state.isLastPage) {
+      return;
+    }
+
+    const newStart = this.state.endPage + 1;
+    const newEnd = newStart + 1;
+    this.setState({startPage: newStart, endPage: newEnd});
   }
 }
 

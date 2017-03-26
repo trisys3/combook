@@ -31,6 +31,14 @@ export default class Book extends React.Component {
 
   componentDidMount() {
     this.props.isFirstPage(this.props.startPage <= this.firstPage);
-    this.props.isLastPage(this.props.endPage <= this.lastPage);
+    this.props.isLastPage(this.props.endPage >= this.lastPage);
+  }
+
+  componentDidUpdate({startPage, endPage}) {
+    if(startPage !== this.props.startPage ||
+        endPage !== this.props.endPage) {
+      this.props.isFirstPage(this.props.startPage <= this.firstPage);
+      this.props.isLastPage(this.props.endPage >= this.lastPage);
+    }
   }
 }
