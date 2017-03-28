@@ -6,39 +6,54 @@ const Page = window.page.default;
 
 export default class Book extends React.Component {
   render() {
-    const {book: {shortTitle = '', author = ''} = {}, startPage = 0,
-      endPage} = this.props || {};
-
-    const authorName = `${author.first}-${author.last}`;
-    const bookFolder = `./books/${authorName}/${shortTitle}`;
-    const bookCss = require(`${bookFolder}/book.css`);
-    const {pages, firstPage = 1, lastPage = pages + firstPage - 1} =
-      require(`${bookFolder}/meta`);
-
-    Object.assign(this, {firstPage, lastPage});
+    const {startPage = 0, endPage} = this.props || {};
 
     const pageCount = Math.abs(endPage - startPage + 1) || 1;
 
-    return <div className={`${css.comBook} ${bookCss.comBook}`}>
+    return <div className={`${css.comBook} ${this.bookCss.comBook}`}>
       {Array(pageCount).map((page, index) => {
         const pageNum = index + 1;
-        const pageWords = require(`${bookFolder}/pages/${pageNum}/words.txt`);
+        const pageWords = require(`${this.bookFolder}/pages/${pageNum}/words.txt`);
 
         return <Page words={pageWords} key={pageNum} />;
       })}
     </div>;
   }
 
-  componentDidMount() {
-    this.props.isFirstPage(this.props.startPage <= this.firstPage);
-    this.props.isLastPage(this.props.endPage >= this.lastPage);
+  componentWillMount() {
+    Object.assign(this, this.getMeta(this.props.book));
+    this.props.isBookend({
+      isFirst: this.props.startPage <= this.firstPage,
+      isLast: this.props.endPage >= this.lastPage,
+    });
   }
 
-  componentDidUpdate({startPage, endPage}) {
+  componentWillReceiveProps({book, startPage, endPage}) {
+    if(book !== this.props.book) {
+      Object.assign(this, this.getMeta(this.props.book));
+    }
+
     if(startPage !== this.props.startPage ||
         endPage !== this.props.endPage) {
-      this.props.isFirstPage(this.props.startPage <= this.firstPage);
-      this.props.isLastPage(this.props.endPage >= this.lastPage);
+      this.props.isBookend({
+        isFirst: startPage <= this.firstPage,
+        isLast: endPage >= this.lastPage,
+      });
     }
+  }
+
+  getMeta(book) {
+    const {shortTitle = '', author = ''} = book || {};
+    this.authorName = `${author.first}-${author.last}`;
+    this.bookFolder = `./books/${this.authorName}/${shortTitle}`;
+    const {pages, firstPage = 1, lastPage = pages + firstPage - 1} =
+      require(`${this.bookFolder}/meta`);
+
+    return {
+      bookCss: require(`${this.bookFolder}/book.css`),
+      pages,
+      firstPage,
+      lastPage,
+    };
   }
 }

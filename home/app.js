@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {homeComp, homeBook, pageChanger, prevPage, nextPage} from './app.css';
+import {homeComp, homeBook, pageChanger, prevPage, nextPage, opened} from './app.css';
 const Book = window.comBook.default;
 
 const socket = io(__dirname);
@@ -40,29 +40,29 @@ class Home extends React.Component {
       endPage: 1,
     };
 
-    this.isFirstPage = this.isFirstPage.bind(this);
-    this.isLastPage = this.isLastPage.bind(this);
+    this.isBookend = this.isBookend.bind(this);
   }
 
   render() {
+    let bookClasses = homeBook;
+    if(!this.state.isFirstPage && !this.state.isLastPage) {
+      bookClasses += ` ${opened}`;
+    }
+
     const {startPage, endPage = startPage} = this.state;
     return <div className={homeComp}>
       <div className={`${prevPage} ${pageChanger}`} onClick={() => this.getPrevPage()} disabled={this.state.isFirstPage} />
 
-      <div className={homeBook}>
-        <Book book={book} startPage={startPage} endPage={endPage} isFirstPage={this.isFirstPage} isLastPage={this.isLastPage} />
+      <div className={bookClasses}>
+        <Book book={book} startPage={startPage} endPage={endPage} isBookend={this.isBookend} />
       </div>
 
       <div className={`${nextPage} ${pageChanger}`} onClick={() => this.getNextPage()} disabled={this.state.isLastPage} />
     </div>;
   }
 
-  isFirstPage(isFirst) {
-    this.setState({isFirstPage: isFirst});
-  }
-
-  isLastPage(isLast) {
-    this.setState({isLastPage: isLast});
+  isBookend({isFirst, isLast} = {}) {
+    this.setState({isFirstPage: isFirst, isLastPage: isLast});
   }
 
   getPrevPage() {
