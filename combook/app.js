@@ -7,7 +7,18 @@ const Page = window.page.default;
 
 export default class Book extends React.Component {
   render() {
-    const {startPage = 0, endPage} = this.props || {};
+    let {startPage = 0, endPage} = this.props || {};
+
+    if(startPage < this.firstPage) {
+      startPage = this.firstPage;
+    }
+    if(endPage > this.lastPage) {
+      endPage = this.lastPage;
+    }
+
+    if(endPage < startPage) {
+      endPage = startPage;
+    }
 
     const pageCount = Math.abs(endPage - startPage + 1) || 1;
 
