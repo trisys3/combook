@@ -50,15 +50,15 @@ class Home extends React.Component {
     }
 
     const {startPage, endPage = startPage} = this.state;
-    return <div className={homeComp}>
-      <div className={`${prevPage} ${pageChanger}`} onClick={() => this.getPrevPage()} disabled={this.state.isFirstPage} />
+    return <homeComp className={homeComp}>
+      <changer className={`${prevPage} ${pageChanger}`} onClick={() => this.getPrevPage()} disabled={this.state.isFirstPage} />
 
-      <div className={bookClasses}>
+      <book className={bookClasses}>
         <Book book={book} startPage={startPage} endPage={endPage} isBookend={this.isBookend} />
-      </div>
+      </book>
 
-      <div className={`${nextPage} ${pageChanger}`} onClick={() => this.getNextPage()} disabled={this.state.isLastPage} />
-    </div>;
+      <changer className={`${nextPage} ${pageChanger}`} onClick={() => this.getNextPage()} disabled={this.state.isLastPage} />
+    </homeComp>;
   }
 
   isBookend({isFirst, isLast} = {}) {
@@ -86,4 +86,4 @@ class Home extends React.Component {
   }
 }
 
-ReactDOM.render(<Home />, document.querySelector('home-book'));
+ReactDOM.render(<Home />, document.querySelector('home-page'));

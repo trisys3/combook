@@ -2,6 +2,7 @@ import React from 'react';
 
 import css from './app.css';
 
+import {bookPage} from './app.css';
 const Page = window.page.default;
 
 export default class Book extends React.Component {
@@ -10,14 +11,18 @@ export default class Book extends React.Component {
 
     const pageCount = Math.abs(endPage - startPage + 1) || 1;
 
-    return <div className={`${css.comBook} ${this.bookCss.comBook}`}>
-      {Array(pageCount).map((page, index) => {
-        const pageNum = index + 1;
-        const pageWords = require(`${this.bookFolder}/pages/${pageNum}/words.txt`);
+    return <bookComp className={`${css.comBook} ${this.bookCss.comBook}`}>
+      {[,...Array(pageCount)].map((page, pageNum) => {
+        let pageWords = '';
+        try {
+          pageWords = require(`${this.bookFolder}/pages/${pageNum}/words.txt`);
+        } catch(error) {}
 
-        return <Page words={pageWords} key={pageNum} />;
+        return <page className={bookPage} key={pageNum}>
+          <Page words={pageWords} />
+        </page>;
       })}
-    </div>;
+    </bookComp>;
   }
 
   componentWillMount() {
