@@ -34,7 +34,7 @@ const config = {
   output: {
     filename: '[name].[hash].js',
     chunkFilename: '[name].[hash].[chunkhash].js',
-    path: `${process.cwd()}/dist`,
+    path: './dist',
     pathinfo: options.nodeEnv === 'development',
     libraryTarget: 'commonjs2',
   },
