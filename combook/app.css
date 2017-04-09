@@ -1,15 +1,21 @@
-.comBook {
+bookcomp {
   display: flex;
   width: 100%;
-  height: 100%;
 }
 
-.bookPage {
-  display: block;
+page {
+  display: flex;
   width: 100%;
-  height: 100%;
 
   &:first-of-type:not(:only-child) {
     border-right: 4px solid red;
   }
+}
+
+page-num {
+  align-self: flex-end;
+  margin-left: auto;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  font-size: 30px;
 }

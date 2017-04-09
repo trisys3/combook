@@ -44,16 +44,16 @@ class Home extends React.Component {
   }
 
   render() {
-    let bookClasses = homeBook;
+    let openedClass;
     if(!this.state.isFirstPage && !this.state.isLastPage) {
-      bookClasses += ` ${opened}`;
+      openedClass = opened;
     }
 
     const {startPage, endPage = startPage} = this.state;
     return <homeComp className={homeComp}>
       <changer className={`${prevPage} ${pageChanger}`} onClick={() => this.getPrevPage()} disabled={this.state.isFirstPage} />
 
-      <book className={bookClasses}>
+      <book className={openedClass}>
         <Book book={book} startPage={startPage} endPage={endPage} isBookend={this.isBookend} />
       </book>
 

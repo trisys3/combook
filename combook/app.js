@@ -22,7 +22,7 @@ export default class Book extends React.Component {
 
     const pageCount = Math.abs(endPage - startPage + 1) || 1;
 
-    return <bookComp className={`${css.comBook} ${this.bookCss.comBook}`}>
+    return <bookComp className={this.bookCss.comBook}>
       {[,...Array(pageCount)].map((page, pageNum) => {
         let pageWords = '';
         try {
@@ -30,7 +30,9 @@ export default class Book extends React.Component {
         } catch(error) {}
 
         return <page className={bookPage} key={pageNum}>
-          <Page words={pageWords} />
+          <Page words={pageWords}>
+            <page-num>{pageNum + startPage - 1}</page-num>
+          </Page>
         </page>;
       })}
     </bookComp>;

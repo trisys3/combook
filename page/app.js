@@ -1,3 +1,5 @@
 import React from 'react';
 
-export default () => <div />;
+import './app.css';
+
+export default ({children}) => <page-comp>{children}</page-comp>;
