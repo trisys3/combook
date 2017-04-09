@@ -12,10 +12,19 @@ page {
   }
 }
 
-page-num {
+pagenum {
   align-self: flex-end;
-  margin-left: auto;
+  margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 20px;
   font-size: 30px;
+
+  &.pageMiddle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &.pageLast {
+    margin-left: auto;
+  }
 }

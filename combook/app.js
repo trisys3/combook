@@ -29,9 +29,18 @@ export default class Book extends React.Component {
           pageWords = require(`${this.bookFolder}/pages/${pageNum}/words.txt`);
         } catch(error) {}
 
+        let pageClasses = css.bookPage;
+        if(pageNum === 1 && pageCount > 1) {
+          pageClasses += ` ${css.page1}`;
+        } else if(pageNum === pageCount) {
+          pageClasses += ` ${css.pageLast}`;
+        } else {
+          pageClasses += ` ${css.pageMiddle}`;
+        }
+
         return <page className={bookPage} key={pageNum}>
           <Page words={pageWords}>
-            <page-num>{pageNum + startPage - 1}</page-num>
+            <pageNum className={pageClasses}>{pageNum + startPage - 1}</pageNum>
           </Page>
         </page>;
       })}
