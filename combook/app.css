@@ -1,4 +1,4 @@
-bookcomp {
+book-comp {
   display: flex;
   width: 100%;
 }
@@ -12,7 +12,7 @@ page {
   }
 }
 
-pagenum {
+page-num {
   align-self: flex-end;
   margin-left: 20px;
   margin-right: 20px;

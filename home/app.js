@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {homeComp, homeBook, pageChanger, prevPage, nextPage, opened} from './app.css';
+import {prevPage, nextPage, opened} from './app.css';
 const Book = window.comBook.default;
 
 const socket = io(__dirname);
@@ -50,19 +50,28 @@ class Home extends React.Component {
     }
 
     const {startPage, endPage = startPage} = this.state;
-    return <homeComp className={homeComp}>
-      <changer className={`${prevPage} ${pageChanger}`} onClick={() => this.getPrevPage()} disabled={this.state.isFirstPage} />
+    return <home-comp>
+      <page-changer class={prevPage} onClick={() => this.getPrevPage()} disabled={this.state.isFirstPage} />
 
       <book className={openedClass}>
         <Book book={book} startPage={startPage} endPage={endPage} isBookend={this.isBookend} />
       </book>
 
-      <changer className={`${nextPage} ${pageChanger}`} onClick={() => this.getNextPage()} disabled={this.state.isLastPage} />
-    </homeComp>;
+      <page-changer class={nextPage} onClick={() => this.getNextPage()} disabled={this.state.isLastPage} />
+    </home-comp>;
   }
 
   isBookend({isFirst, isLast} = {}) {
-    this.setState({isFirstPage: isFirst, isLastPage: isLast});
+    let isFirstPage;
+    let isLastPage;
+    if(isFirst) {
+      isFirstPage = 'disabled';
+    }
+    if(isLast) {
+      isLastPage = 'disabled';
+    }
+
+    this.setState({isFirstPage, isLastPage});
   }
 
   getPrevPage() {
