@@ -28,17 +28,10 @@ const page = {
   name: 'page',
 };
 
-const panel = {
-  path: 'panel',
-  src: 'panel',
-  name: 'panel',
-};
-
 const routes = [
   root,
   book,
   page,
-  panel,
 ];
 
 export default routes.map(({name = '', path = '', src = '', route}) => {

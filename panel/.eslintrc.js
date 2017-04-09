@@ -1,3 +1,0 @@
-exports.env = {
-  browser: true,
-};
